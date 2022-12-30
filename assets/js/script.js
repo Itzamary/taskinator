@@ -1,5 +1,6 @@
 var taskIdCounter = 0;
 
+// DOM elements
 var formEl = document.querySelector("#task-form");
 var tasksToDoEl = document.querySelector("#tasks-to-do");
 var tasksInProgressEl = document.querySelector("#tasks-in-progress");
@@ -42,19 +43,23 @@ var taskFormHandler = function (event) {
 };
 
 var createTaskEl = function(taskDataObj) {
+  // create the list element with class and attributes.
   var listItemEl = document.createElement("li");
   listItemEl.className = "task-item";
   listItemEl.setAttribute("data-task-id", taskIdCounter);
 
+  //create a div with task info and append to list element.
   var taskInfoEl = document.createElement("div");
   taskInfoEl.className = "task-info";
   taskInfoEl.innerHTML =
     "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span>";
   listItemEl.appendChild(taskInfoEl);
-
+  
+  // save the result of calling the createTaskAction function to a varibale and append it to the list item element.
   var taskActionsEl = createTaskActions(taskIdCounter);
-  listItemEl.appendChild(taskActionsEl);
+  listItemEl.appendChild(taskActionsEl)
 
+  // use a switch case to figure out the the status of the object and append it to the proper element.
   switch (taskDataObj.status) {
     case "to do":
       taskActionsEl.querySelector("select[name='status-change']").selectedIndex = 0;
@@ -74,7 +79,6 @@ var createTaskEl = function(taskDataObj) {
 
   // save task as an object with name, type, status, and id properties then push it into tasks array
   taskDataObj.id = taskIdCounter;
-
   tasks.push(taskDataObj);
 
   // save tasks to localStorage
@@ -155,6 +159,7 @@ var taskButtonHandler = function (event) {
   // get target element from event
   var targetEl = event.target;
 
+  // if event matches the target edit or delete the target.
   if (targetEl.matches(".edit-btn")) {
     console.log("edit", targetEl);
     var taskId = targetEl.getAttribute("data-task-id");
@@ -248,6 +253,7 @@ var deleteTask = function (taskId) {
 };
 
 var saveTasks = function() {
+  // saves the task to the local storage.
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
